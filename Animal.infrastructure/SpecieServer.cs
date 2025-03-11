@@ -10,8 +10,8 @@ namespace Animal.infrastructure{
     public class SpecieService{
         private readonly AnimalContext _context;
         private readonly DbSet<Specie> _dbSet;
-        public SpecieService(){
-            _context = new AnimalContext();
+        public SpecieService(AnimalContext context){
+            _context = context;
             _dbSet = _context.Set<Specie>();
         }
         public bool IsNameUnique(string name){
@@ -21,14 +21,13 @@ namespace Animal.infrastructure{
             if (string.IsNullOrEmpty(specie.Name)){
                 throw new System.ArgumentException("Назва виду не може бути пустою");
             }
-
-            if (!IsNameUnique(specie.Name))
-            {
+            if (!IsNameUnique(specie.Name)){
                 throw new System.ArgumentException($"Назва виду повинна бути унікольною. Вид: \"{specie.Name}\" вже існує");
             }
             _dbSet.Add(specie);
             _context.SaveChanges();
         }
+
         public Specie? GetSpecieById(int id){
             return _dbSet.Find(id);
         }
@@ -40,7 +39,7 @@ namespace Animal.infrastructure{
                 throw new System.ArgumentException("Назва виду не може бути пустою");
             }
             if (!IsNameUnique(specie.Name)){
-                throw new System.ArgumentException("Назва виду повинна бути унікольною. Вид: \"{specie.Name}\" вже існує");
+                throw new System.ArgumentException($"Назва виду повинна бути унікольною. Вид: \"{specie.Name}\" вже існує");
             }
             _dbSet.Update(specie);
             _context.SaveChanges();

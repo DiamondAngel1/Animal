@@ -8,4 +8,5 @@ namespace Animal.infrastructure.Entitys{
         [Required, StringLength(100)]
         public string Name { get; set; } = null;
     }
+
 }
